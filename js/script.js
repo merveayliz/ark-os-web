@@ -34,7 +34,6 @@ async function kayitOl() {
     }
 }
 
-window.kayitOl = kayitOl;
 window.onload = function() {
     let mesaj = document.getElementById("mesaj");
     let konteynir = document.getElementById("ana-konteynir");
@@ -205,6 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 window.kayitOl = kayitOl;
 window.girisYap = girisYap;
+
 
 
 
