@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>ARK-OS | Veri Arşivi</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bilgi-sayfasi">
+
+    
+<div class="sidebar">
+    <div class="profil-kutu">
+    <div class="profil-resim">
+        <a href="profil.html">
+            <img src="img/murphy.jpg" id="nav-avatar" alt="Profil" title="Profilime Git">
+        </a>
+    </div>
+    <span id="nav-user-name" style="color:#00ff96; font-size:0.8rem; display:block; text-align:center; cursor:pointer;" onclick="location.href='profil.html'">Skaikru</span>
+</div>
+
+    <nav class="side-nav">
+        <ul class="nav-links">
+            <li><a href="anasayfa.html"><i class="icon">📋</i>Ana Sayfa</a></li>
+            <li><a href="kesfet.html"><i class="icon">🌍</i> Keşfet </a></li>
+            <li><a href="sohbet.html"><i class="icon">💬</i> Sohbet Odası</a></li>
+            <li><a href="test.html"><i class="icon">📝</i> Testler </a></li>
+            <li><a href="bilgiler.html"><i class="icon">💡</i> İlginç Bilgiler</a></li>
+        
+        </ul>
+    </nav>
+</div>
+<div class="ana-icerik">
+    <header class="terminal-header" style="display: flex; justify-content: space-between;  align-items: center; padding: 15px 25px;">
+        <div class="baslik-grubu">
+            <h1 class="sayfa-basligi" style="margin: 0; font-size: 1.5rem;">DATA_LOGS_ARCHIVE</h1>
+            <p style="color: #000; font-size: 0.7rem; margin: 0; font-weight: bold;">ACCESS_LEVEL: WANHEDA</p>
+        </div>
+        
+        <div class="arama-kutusu">
+            <input type="text" id="bilgi-ara" placeholder="VERİ ARA..." onkeyup="filtrele()" 
+                   style="background: rgba(0,0,0,0.2); border: 1px solid #000; color: #000; padding: 5px 10px; width: 200px; margin: 0;">
+        </div>
+    </header>
+<div class="filtre-butonlari">
+    <button onclick="kategoriFiltrele('HEPSİ')" class="filtre-btn hepsi">HEPSİ</button>
+    <button onclick="kategoriFiltrele('DİZİ')" class="filtre-btn dizi">DİZİ</button>
+    <button onclick="kategoriFiltrele('KİTAP')" class="filtre-btn kitap">KİTAP</button>
+</div>
+    <div class="bilgi-konteynir" id="bilgi-alani"></div>
+</div>
+
+    <div id="bilgi-modal" class="modal-gizli">
+        <div class="modal-icerik">
+            <span class="kapat-btn" onclick="modalKapat()">&times;</span>
+            <div id="modal-govde">
+                <h2 id="modal-baslik" style="color: #28f19e;"></h2>
+               <hr style="border: 1px solid #00ff96; margin: 15px 0;">
+                <p id="modal-detay" style="color: white; line-height: 1.6;"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/bilgiler.js"></script>
+</body>
+</html>

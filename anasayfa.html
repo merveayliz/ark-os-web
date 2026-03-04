@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Dünya'ya Hoş Geldin | ARK-OS</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="anasayfa-body">
+
+
+<div class="sidebar">
+    <div class="profil-kutu">
+    <div class="profil-resim">
+        <a href="profil.html">
+            <img src="img/murphy.jpg" id="nav-avatar" alt="Profil" title="Profilime Git">
+        </a>
+    </div>
+    <span id="nav-user-name" style="color:#00ff96; font-size:0.8rem; display:block; text-align:center; cursor:pointer;" onclick="location.href='profil.html'">Skaikru</span>
+</div>
+
+    <nav class="side-nav">
+        <ul class="nav-links">
+            <li><a href="anasayfa.html"><i class="icon">📋</i>Ana Sayfa</a></li>
+            <li><a href="kesfet.html"><i class="icon">🌍</i> Keşfet </a></li>
+            <li><a href="sohbet.html"><i class="icon">💬</i> Sohbet Odası</a></li>
+            <li><a href="test.html"><i class="icon">📝</i> Testler </a></li>
+            <li><a href="bilgiler.html"><i class="icon">💡</i> İlginç Bilgiler</a></li>
+           
+        </ul>
+    </nav>
+</div>
+
+     <div class="ana-icerik">
+         <h1 class="sayfa-basligi">Dünya'nın Liderleri</h1>
+         <div id="karakterler-alani" class="kart-dizilimi">
+             </div>
+     </div>
+     
+        <div id="soz-modal" class="modal-gizli">
+       <div class="modal-icerik">
+           <span class="kapat-btn" onclick="modalKapat()">&times;</span>
+           <h2 id="modal-isim"></h2>
+           <p id="modal-soz" ></p>
+       </div>
+   </div>
+
+    <script src="js/anasayfa.js"></script>
+
+</body>
+</html>

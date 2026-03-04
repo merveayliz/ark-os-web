@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>ARK-OS | Test Merkezi</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="sohbet-body">
+    
+<div class="sidebar">
+   <div class="profil-kutu">
+    <div class="profil-resim">
+        <a href="profil.html">
+            <img src="img/murphy.jpg" id="nav-avatar" alt="Profil" title="Profilime Git">
+        </a>
+    </div>
+    <span id="nav-user-name" style="color:#00ff96; font-size:0.8rem; display:block; text-align:center; cursor:pointer;" onclick="location.href='profil.html'"></span>
+</div>
+
+    <nav class="side-nav">
+        <ul class="nav-links">
+            <li><a href="anasayfa.html"><i class="icon">📋</i>Ana Sayfa</a></li>
+            <li><a href="kesfet.html"><i class="icon">🌍</i> Keşfet </a></li>
+            <li><a href="sohbet.html"><i class="icon">💬</i> Sohbet Odası</a></li>
+            <li><a href="test.html"><i class="icon">📝</i> Testler </a></li>
+            <li><a href="bilgiler.html"><i class="icon">💡</i> İlginç Bilgiler</a></li>
+           
+        </ul>
+    </nav>
+</div>
+
+     <div class="terminal-pencere" style="height: 650px; max-width: 900px;">
+        <div class="terminal-header">
+            <span>SYSTEM_DIAGNOSTICS_V.2.0</span>
+            <span id="test-saat">OKSİJEN: %100</span>
+        </div>
+
+        <div id="mesaj-alani">
+            <div id="test-secim" class="merkez-icerik">
+                <h2 style="color: #00ff96; margin-bottom: 20px;">TEST KATEGORİSİ SEÇİN</h2>
+                <div class="test-buton-grubu">
+                    <button onclick="testiHazirla('kitap_bilgi')">KİTAP BİLGİSİ</button>
+                    <button onclick="testiHazirla('kitap_karakter')">KİTAP KARAKTERİ</button>
+                    <button onclick="testiHazirla('dizi_bilgi')">DİZİ BİLGİSİ</button>
+                    <button onclick="testiHazirla('dizi_karakter')">DİZİ KARAKTERİ</button>
+                </div>
+            </div>
+
+            <div id="soru-konteynir" class="gizli">
+                <div id="soru-metni" style="font-size: 1.3rem; margin-bottom: 20px;"></div>
+                <div id="secenekler-listesi"></div>
+            </div>
+        </div>
+
+        <div class="terminal-footer">
+            <button id="sonraki-btn" class="gizli" onclick="sonrakiSoru()">SONRAKİ VERİ >></button>
+            <button id="analiz-btn" class="gizli" onclick="sonucuHesapla()">ANALİZİ TAMAMLA</button>
+        </div>
+    </div>
+
+    <div id="soz-modal" class="modal-gizli">
+        <div class="modal-icerik" id="sonuc-penceresi">
+            </div>
+    </div>
+
+    <script src="js/test.js"></script>
+</body>
+</html>

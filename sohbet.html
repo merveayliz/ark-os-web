@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>ARK-OS | Earth Terminal</title>
+    <link rel="stylesheet" href="css/style.css"> 
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="sohbet-body"> 
+    <div id="sohbet-ekrani">
+        <div class="terminal-pencere">
+            <div class="terminal-header">
+                <span class="baslik-sol">MISSION_CHAT: EARTH_RECON</span>
+                <span id="canli-saat" class="baslik-sag">--:--:--</span>
+            </div>
+            
+            <div id="mesaj-alani">
+                <div class="sistem-notu">[SYSTEM]: Connection established. Atmospheric data: STABLE.</div>
+            </div>
+
+            <div class="terminal-footer">
+                <input type="text" id="mesaj-input" placeholder="Mesajını yaz, Skaikru.." autocomplete="off">
+                <button id="gonder-btn" onclick="mesajGonder()">SEND</button>
+            </div>
+        </div>
+    </div>
+
+<div class="sidebar">
+    <div class="profil-kutu">
+    <div class="profil-resim">
+        <a href="profil.html">
+            <img src="img/murphy.jpg" id="nav-avatar" alt="Profil" title="Profilime Git">
+        </a>
+    </div>
+    <span id="nav-user-name" style="color:#00ff96; font-size:0.8rem; display:block; text-align:center; cursor:pointer;" onclick="location.href='profil.html'">Skaikru</span>
+</div>
+
+    <nav class="side-nav">
+        <ul class="nav-links">
+            <li><a href="anasayfa.html"><i class="icon">📋</i>Ana Sayfa</a></li>
+            <li><a href="kesfet.html"><i class="icon">🌍</i> Keşfet </a></li>
+            <li><a href="sohbet.html"><i class="icon">💬</i> Sohbet Odası</a></li>
+            <li><a href="test.html"><i class="icon">📝</i> Testler </a></li>
+            <li><a href="bilgiler.html"><i class="icon">💡</i> İlginç Bilgiler</a></li>
+        
+        </ul>
+    </nav>
+</div>
+
+    <script src="js/sohbet.js"></script>
+</body>
+</html>
