@@ -142,14 +142,6 @@ function formDegistir() {
     document.getElementById("kayit-formu").classList.toggle("gizli");
 }
 
-function kayitOl() {
-    const ad = document.getElementById("kayit-ad").value;
-    const sifre = document.getElementById("kayit-sifre").value;
-
-    if (ad === "" || sifre === "") {
-        alert("Sistem Hatası: Alanlar boş bırakılamaz!");
-        return;
-    }
 
     const kullaniciVerisi = {
         kullaniciAdi: ad,
@@ -164,16 +156,7 @@ function kayitOl() {
     formDegistir(); 
 }
 
-function sistemeGir() {
-    const girilenAd = document.getElementById("login-ad").value;
-    const girilenSifre = document.getElementById("login-sifre").value;
 
-    const kayitliVeri = JSON.parse(localStorage.getItem("skaikru_user"));
-
-    if (!kayitliVeri) {
-        alert("Erişim Reddedildi: Önce kayıt olmalısın!");
-        return;
-    }
 
     if (girilenAd === kayitliVeri.kullaniciAdi && girilenSifre === kayitliVeri.sifre) {
         alert("Erişim Onaylandı. Ark-OS'a hoş geldin, " + girilenAd);
@@ -222,5 +205,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 window.kayitOl = kayitOl;
 window.girisYap = girisYap;
+
 
 
