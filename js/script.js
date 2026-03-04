@@ -34,16 +34,16 @@ async function kayitOl() {
     }
 }
 
-// --- GİRİŞ YAP FONKSİYONU ---
 async function girisYap() {
-    // HTML'deki input ID'lerinin login-email ve login-sifre olduğundan emin ol
     const email = document.getElementById("login-email")?.value; 
     const sifre = document.getElementById("login-sifre")?.value;
 
     if (!email || !sifre) {
-        alert("Lütfen tüm alanları doldur!");
+        alert("Skaikru, tüm alanları doldurmalısın!");
         return;
     }
+   
+}
 
     try {
         await signInWithEmailAndPassword(auth, email, sifre);
@@ -98,3 +98,4 @@ setInterval(() => {
     const saatAlani = document.getElementById("canli-saat");
     if(saatAlani) saatAlani.innerText = new Date().toLocaleTimeString();
 }, 1000);
+
