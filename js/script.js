@@ -220,3 +220,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+window.kayitOl = kayitOl;
+
