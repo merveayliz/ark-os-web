@@ -1,3 +1,40 @@
+
+import { auth, db } from './firebase-config.js';
+import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+async function kayitOl() {
+    const email = document.getElementById("kayit-email").value;
+    const sifre = document.getElementById("kayit-sifre").value;
+    const ad = document.getElementById("kayit-ad").value;
+
+    if (!email || !sifre || !ad) {
+        alert("Skaikru, tüm alanları doldurmalısın!");
+        return;
+    }
+
+    try {
+        
+        const userCredential = await createUserWithEmailAndPassword(auth, email, sifre);
+        const user = userCredential.user;
+
+        // 2. Kullanıcı ek bilgilerini Firestore Database'e kaydet
+        await setDoc(doc(db, "kullanicilar", user.uid), {
+            kullaniciAdi: ad,
+            email: email,
+            rutbe: "Skaikru",
+            kayitTarihi: new Date()
+        });
+
+        alert("Ark-OS Çekirdeğine Başarıyla Kaydedildin!");
+        window.location.href = "anasayfa.html";
+    } catch (error) {
+        console.error("Hata kodu:", error.code);
+        alert("Erişim Reddedildi: " + error.message);
+    }
+}
+
+window.kayitOl = kayitOl;
 window.onload = function() {
     let mesaj = document.getElementById("mesaj");
     let konteynir = document.getElementById("ana-konteynir");
@@ -181,4 +218,5 @@ document.addEventListener("DOMContentLoaded", () => {
             navIsim.innerText = user.kullaniciAdi;
         }
     }
+
 });
