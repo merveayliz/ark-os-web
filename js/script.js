@@ -221,4 +221,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 window.kayitOl = kayitOl;
+window.girisYap = girisYap;
+
 
