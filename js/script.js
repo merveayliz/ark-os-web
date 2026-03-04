@@ -54,9 +54,10 @@ async function girisYap() {
     }
 }
 
-// Fonksiyonları küresel yapıyoruz ki HTML butonları çalışsın
+
 window.kayitOl = kayitOl;
 window.girisYap = girisYap;
+window.formDegistir = formDegistir;
 window.formDegistir = function() {
     document.getElementById("giris-formu").classList.toggle("gizli");
     document.getElementById("kayit-formu").classList.toggle("gizli");
@@ -98,4 +99,5 @@ setInterval(() => {
     const saatAlani = document.getElementById("canli-saat");
     if(saatAlani) saatAlani.innerText = new Date().toLocaleTimeString();
 }, 1000);
+
 
