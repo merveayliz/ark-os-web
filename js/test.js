@@ -248,7 +248,7 @@ let oksijen = 100;
 let oksijenTimer;
 let secilenTur = "";
 
-function testiHazirla(tur) {
+window.function testiHazirla(tur) {
     secilenTur = tur;
     suankiTest = sorular[tur];
     suankiSoruIndeks = 0;
@@ -262,7 +262,7 @@ function testiHazirla(tur) {
     soruyuGoster();
 }
 
-function soruyuGoster() {
+window.function soruyuGoster() {
     const soru = suankiTest[suankiSoruIndeks];
     const soruMetni = document.getElementById("soru-metni");
     const seceneklerAlan = document.getElementById("secenekler-listesi");
@@ -290,7 +290,7 @@ function soruyuGoster() {
     }
 }
 
-function sonrakiSoru() {
+window.function sonrakiSoru() {
     const secilen = document.querySelector('input[name="soru"]:checked');
     if (!secilen) return alert("Sistem uyarısı: Bir seçenek belirleyin!");
     puanlariHesapla(secilen.value);
@@ -298,7 +298,7 @@ function sonrakiSoru() {
     soruyuGoster();
 }
 
-function puanlariHesapla(secimValue) {
+window.function puanlariHesapla(secimValue) {
     const soru = suankiTest[suankiSoruIndeks];
     if (secilenTur.includes("bilgi")) {
         if (parseInt(secimValue) === soru.c) puanlar.dogru++;
@@ -308,7 +308,7 @@ function puanlariHesapla(secimValue) {
     }
 }
 
-function baslatOksijen() {
+window.function baslatOksijen() {
     oksijen = 100;
     const saat = document.getElementById("test-saat");
     clearInterval(oksijenTimer);
@@ -324,4 +324,5 @@ function baslatOksijen() {
         }
     }, 1000);
 }
+
 
