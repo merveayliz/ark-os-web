@@ -1,3 +1,82 @@
+
+import { auth, db } from './firebase-config.js';
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+const resimEslesme = {
+    clarke: "clark.jpg",
+    murphy: "murphy.jpg",
+    raven: "raven.jpg",
+    bellamy: "bellamy.jpg",
+    wells: "wells.jpg"
+};
+
+
+window.testiHazirla = function(tur) {
+    secilenTur = tur;
+    suankiTest = sorular[tur];
+    suankiSoruIndeks = 0;
+    
+    // Puanları sıfırla
+    puanlar = { dogru: 0, clarke: 0, murphy: 0, raven: 0, bellamy: 0, wells: 0 };
+    
+    document.getElementById("test-secim").classList.add("gizli");
+    document.getElementById("soru-konteynir").classList.remove("gizli");
+    
+    baslatOksijen();
+    soruyuGoster();
+};
+
+window.sonrakiSoru = function() {
+    const secilen = document.querySelector('input[name="soru"]:checked');
+    if (!secilen) return alert("Sistem uyarısı: Bir seçenek belirleyin!");
+    puanlariHesapla(secilen.value);
+    suankiSoruIndeks++;
+    soruyuGoster();
+};
+
+window.sonucuHesapla = function() {
+    const secilen = document.querySelector('input[name="soru"]:checked');
+    if (secilen) puanlariHesapla(secilen.value);
+
+    clearInterval(oksijenTimer);
+    const modal = document.getElementById("soz-modal");
+    const icerik = document.getElementById("sonuc-penceresi");
+    if(!modal || !icerik) return;
+    
+    let finalBaslik = "";
+    let finalAciklama = "";
+    let karakterResmi = "";
+
+    if (secilenTur.includes("bilgi")) {
+        finalBaslik = `ANALİZ: ${puanlar.dogru} / ${suankiTest.length}`;
+        finalAciklama = puanlar.dogru >= (suankiTest.length / 2) ? "Gerçek bir hayatta kalan!" : "Radyasyon seni bitirdi...";
+        karakterResmi = "img/icon.jpg"; 
+    } else {
+        let enYuksekSkor = -1;
+        let kazanan = "";
+        for (let k in puanlar) {
+            if (k !== 'dogru' && puanlar[k] > enYuksekSkor) {
+                enYuksekSkor = puanlar[k];
+                kazanan = k;
+            }
+        }
+        finalBaslik = `RUHUN: ${kazanan.toUpperCase()}`;
+        finalAciklama = "The 100 dünyasındaki yansımanı buldun. May we meet again.";
+        karakterResmi = `img/${resimEslesme[kazanan] || 'murphy.jpg'}`; 
+    }
+
+    icerik.innerHTML = `
+        <span class="kapat-btn" onclick="location.reload()">&times;</span>
+        <div class="sonuc-kart">
+            <img src="${karakterResmi}" alt="Sonuç" class="sonuc-img" style="width:150px; border-radius:10px;">
+            <h2 style="color:#00ff96; margin-top:15px;">${finalBaslik}</h2>
+            <p style="color:white; margin: 10px 0;">${finalAciklama}</p>
+            <button onclick="location.reload()" class="inis-btn">YENİDEN BAŞLAT</button>
+        </div>
+    `;
+    modal.style.display = "block";
+};
+
 window.addEventListener('DOMContentLoaded', () => {
     const skaikruAd = localStorage.getItem("skaikru_ad") || "Bilinmeyen Savaşçı";
     const profilKutu = document.querySelector(".profil-kutu");
@@ -246,46 +325,3 @@ function baslatOksijen() {
     }, 1000);
 }
 
-
-function sonucuHesapla() {
-    const secilen = document.querySelector('input[name="soru"]:checked');
-    if (secilen) puanlariHesapla(secilen.value);
-
-    clearInterval(oksijenTimer);
-    const modal = document.getElementById("soz-modal");
-    const icerik = document.getElementById("sonuc-penceresi");
-    
-    let finalBaslik = "";
-    let finalAciklama = "";
-    let karakterResmi = "";
-
-if (secilenTur.includes("bilgi")) {
-        finalBaslik = `ANALİZ: ${puanlar.dogru} / ${suankiTest.length}`;
-        finalAciklama = puanlar.dogru >= (suankiTest.length / 2) ? "Gerçek bir hayatta kalan!" : "Radyasyon seni bitirdi...";
-        karakterResmi = "img/icon.jpg"; 
-    } else {
-        let enYuksekSkor = -1;
-        let kazanan = "";
-        for (let k in puanlar) {
-            if (k !== 'dogru' && puanlar[k] > enYuksekSkor) {
-                enYuksekSkor = puanlar[k];
-                kazanan = k;
-            }
-        }
-        finalBaslik = `RUHUN: ${kazanan.toUpperCase()}`;
-        finalAciklama = "The 100 dünyasındaki yansımanı buldun. May we meet again.";
-        
-        karakterResmi = `img/${resimEslesme[kazanan] || 'icon.jpg'}`; 
-    }
-
-    icerik.innerHTML = `
-        <span class="kapat-btn" onclick="location.reload()">&times;</span>
-        <div class="sonuc-kart">
-            <img src="${karakterResmi}" alt="Sonuç" class="sonuc-img">
-            <h2 style="color:#00ff96; margin-top:15px;">${finalBaslik}</h2>
-            <p style="color:white; margin: 10px 0;">${finalAciklama}</p>
-            <button onclick="location.reload()" class="inis-btn">YENİDEN BAŞLAT</button>
-        </div>
-    `;
-    modal.style.display = "block";
-}
