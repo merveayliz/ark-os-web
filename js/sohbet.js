@@ -1,4 +1,4 @@
-// js/sohbet.js
+
 import { auth, db } from './firebase-config.js';
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 import { collection, query, where, getDocs, addDoc, serverTimestamp, orderBy, onSnapshot, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -72,3 +72,4 @@ window.sohbetiAc = function(id, ad, resim) {
     // Mesaj alanını temizle ve şifreleme uyarısı ver
     const mesajAlani = document.getElementById("mesaj-alani");
     mesajAlani.innerHTML = `<div class="sistem
+
