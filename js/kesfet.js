@@ -1,32 +1,51 @@
 import { auth, db } from './firebase-config.js';
 import { collection, getDocs, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-// --- 1. MEVCUT LOKAL TEORİLERİ YÜKLE (Senin Eski Kodun) ---
 window.addEventListener('DOMContentLoaded', () => {
     teorileriYukle();
-});
-function teorileriYukle() {
-   
-    const hazirVeriler = [
-        { 
-            yazar: "Clarke Griffin", 
-            metin: "Mount Weather bir seçenek değil, zorunluluktu. Kimse aksini iddia etmesin.", 
-            tarih: "12:45", 
-            avatar: "img/clark.jpg" 
-        },
-        { 
-            yazar: "John Murphy", 
-            metin: "Yine mi kahramanlık yapıyoruz? Ben sadece kokteylimi içmek istiyorum.", 
-            tarih: "10:20", 
-            avatar: "img/murphy.jpg" 
-        }
-    ];
+});async function teorileriYukle() {
+    const alan = document.getElementById("teori-listesi");
+    if(!alan) return;
 
-    let kullaniciTeorileri = JSON.parse(localStorage.getItem("ark_teoriler")) || [];
-    
-    const tumAkis = [...kullaniciTeorileri, ...hazirVeriler];
-    
-    teorileriBas(tumAkis);
+    alan.innerHTML = "<p style='color:#00ff96; text-align:center;'>📡 Frekanslar taranıyor...</p>";
+
+    try {
+        // Firebase 'gonderiler' koleksiyonundan verileri çek
+        const q = query(collection(db, "gonderiler"), orderBy("tarih", "desc"));
+        const querySnapshot = await getDocs(q);
+        
+        alan.innerHTML = ""; // Yükleniyor yazısını sil
+
+        querySnapshot.forEach((tDoc) => {
+            const t = tDoc.data();
+            // Zaman damgasını okunabilir yap
+            const zaman = t.tarih ? new Date(t.tarih.seconds * 1000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "Az önce";
+
+            alan.innerHTML += `
+                <div class="gonderi-kutusu">
+                    <div class="gonderici-bilgi">
+                        <img src="${t.profilResmi || 'img/murphy.jpg'}" class="post-avatar">
+                        <div class="yazar-detay">
+                            <strong>${t.kullaniciAdi}</strong>
+                            <span>${zaman}</span>
+                        </div>
+                        <button class="takip-btn" onclick="takipEt('${t.uid}', '${t.kullaniciAdi}')">+ Takip Et</button>
+                    </div>
+                    <p class="post-metin">${t.metin}</p>
+                    
+                    <div class="etkilesim-cubugu">
+                        <button onclick="begen(this)"><i class="icon">🚀</i> <span class="sayi">${t.begeniSayisi || 0}</span></button>
+                        <button onclick="cevapla()"><i class="icon">💬</i> Cevapla</button>
+                        <button onclick="paylas()"><i class="icon">📤</i> Paylaş</button>
+                    </div>
+                </div>
+            `;
+        });
+
+    } catch (e) {
+        console.error("Teori yükleme hatası:", e);
+        alan.innerHTML = "Sinyal kesildi, bağlantıyı kontrol et.";
+    }
 }
 
 function teorileriBas(liste) {
@@ -56,30 +75,36 @@ function teorileriBas(liste) {
     });
 }
 
-function teoriPaylas() {
+window.teoriPaylas = async function() {
     const input = document.getElementById("teori-input");
-    const kullaniciAd = localStorage.getItem("skaikru_ad") || "Skaikru";
-    
-    if (input.value.trim() === "") {
-        alert("Sistem Hatası: Boş veri gönderilemez.");
-        return;
+    const user = auth.currentUser;
+
+    if (!user) return alert("Sinyal göndermek için sisteme giriş yapmalısın!");
+    if (input.value.trim() === "") return alert("Boş veri gönderilemez.");
+
+    try {
+        // Kullanıcının güncel bilgilerini al
+        const userDoc = await getDoc(doc(db, "kullanicilar", user.uid));
+        const userData = userDoc.data();
+
+        await addDoc(collection(db, "gonderiler"), {
+            uid: user.uid,
+            kullaniciAdi: userData.kullaniciAdi || "Skaikru",
+            profilResmi: userData.profilResmi || "img/murphy.jpg",
+            metin: input.value,
+            tarih: serverTimestamp(),
+            begeniSayisi: 0
+        });
+
+        input.value = "";
+        teorileriYukle(); // Listeyi yenile
+        console.log("Sinyal yörüngeye oturdu! 🚀");
+
+    } catch (e) {
+        console.error("Paylaşım hatası:", e);
+        alert("Bağlantı hatası: Sinyal gönderilemedi.");
     }
-
-    const yeniTeori = {
-        yazar: kullaniciAd,
-        metin: input.value,
-        tarih: "Az önce",
-        avatar: "img/murphy.jpg" 
-    };
-
-    let veriler = JSON.parse(localStorage.getItem("ark_teoriler")) || [];
-    veriler.unshift(yeniTeori);
-    localStorage.setItem("ark_teoriler", JSON.stringify(veriler));
-
-    input.value = "";
-    teorileriYukle(); 
-}
-
+};
 function begen(btn) {
     let sayiSpan = btn.querySelector(".sayi");
     let mevcutSayi = parseInt(sayiSpan.innerText);
@@ -106,12 +131,11 @@ window.skaikruBul = async function() {
     alan.innerHTML = "<p style='color:#00ff96; text-align:center; font-size:0.8rem;'>📡 Sinyaller taranıyor...</p>";
 
     try {
-        // 1. Önce tüm kullanıcıları çek
         const userSnapshot = await getDocs(collection(db, "kullanicilar"));
-        // 2. Sonra senin takip ettiklerini çek (Buton durumu için)
+
         const takipSnapshot = await getDocs(collection(db, "takip"));
         
-        // Senin takip ettiğin kişilerin ID'lerini bir listeye alalım
+      
         const takipEdilenler = [];
         takipSnapshot.forEach(tDoc => {
             if(tDoc.data().takipEden === auth.currentUser?.uid) {
@@ -125,7 +149,6 @@ window.skaikruBul = async function() {
             if (uDoc.id !== auth.currentUser?.uid) {
                 const veri = uDoc.data();
                 
-                // EĞER bu kullanıcı takip edilenler listesindeyse butonu farklı bas
                 const zatenTakipte = takipEdilenler.includes(uDoc.id);
                 const btnMetin = zatenTakipte ? "✔️ Bağlantı Kuruldu" : "+ Bağlantı Kur";
                 const btnStyle = zatenTakipte ? "background:#00ff96; color:#000;" : "";
@@ -154,19 +177,16 @@ window.skaikruBul = async function() {
     }
 };
 
-// js/kesfet.js içindeki takipEt fonksiyonunu bununla değiştir
 window.takipEt = async function(id, ad) {
     const user = auth.currentUser;
     const btn = document.getElementById(`btn-${id}`);
     
     if(!user) return alert("Sisteme erişimin yok!");
 
-    // Butonu hemen güncelle ki kullanıcı etkileşimi hissetsin
     btn.innerText = "⌛ Bağlanıyor...";
     btn.disabled = true;
 
     try {
-        // Firebase 'takip' koleksiyonuna kaydet (Mesajlaşma altyapısı burası)
         await setDoc(doc(db, "takip", `${user.uid}_${id}`), {
             takipEden: user.uid,
             takipEdilen: id,
@@ -174,7 +194,6 @@ window.takipEt = async function(id, ad) {
             tarih: serverTimestamp()
         });
 
-        // Başarılı olunca butonu kalıcı olarak değiştir
         btn.innerText = "✔️ Bağlantı Kuruldu";
         btn.style.background = "#00ff96";
         btn.style.color = "#000";
@@ -186,4 +205,5 @@ window.takipEt = async function(id, ad) {
         btn.disabled = false;
         alert("Bağlantı başarısız.");
     }
+
 };
