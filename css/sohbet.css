@@ -1,0 +1,90 @@
+/* Sağ Panel Konumu */
+.arkadas-listesi-paneli {
+    position: fixed;
+    right: 30px;
+    top: 15%;
+    width: 280px;
+    max-height: 75vh;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.4); /* Hafif karartı */
+    backdrop-filter: blur(8px);    /* Arkadaki sisi bulanıklaştırır, harika durur */
+    border-left: 2px solid rgba(0, 255, 150, 0.3);
+    border-radius: 10px;
+}
+
+/* Başlık Alanı */
+.panel-baslik {
+    color: #00ff96;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.8rem;
+    text-align: center;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 255, 150, 0.5);
+    text-shadow: 0 0 8px #00ff96;
+    letter-spacing: 3px;
+}
+
+/* Kartların Tasarımı */
+.arkadas-kart {
+    display: flex;
+    align-items: center;
+    background: rgba(10, 10, 10, 0.8); /* Kartın arkası daha net olsun */
+    border: 1px solid rgba(0, 255, 150, 0.2);
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.arkadas-kart:hover {
+    background: rgba(0, 255, 150, 0.1);
+    border-color: #00ff96;
+    transform: scale(1.05) translateX(-5px); /* Hafif büyüme ve sola kayma */
+    box-shadow: -5px 0 15px rgba(0, 255, 150, 0.3);
+}
+
+/* Profil Resimleri */
+.kart-profil-resim img {
+    width: 45px;
+    height: 45px;
+    border-radius: 4px; /* Yuvarlak yerine hafif karemsi terminale daha uygun */
+    border: 1px solid #00ff96;
+    margin-right: 15px;
+    object-fit: cover;
+}
+
+/* İsim ve Durum */
+.kart-isim {
+    display: block;
+    color: #ffffff;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+.kart-durum {
+    display: block;
+    color: #00ff96;
+    font-size: 0.6rem;
+    margin-top: 3px;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+/* js/sohbet.js içindeki mesajlar için stil */
+.terminal-mesaj {
+    font-family: 'Fira Code', monospace;
+    color: #00ff96;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    word-wrap: break-word; /* Uzun kelimeler kutuyu patlatmasın */
+}
+
+.mesaj-prefix {
+    color: #fff;
+    font-weight: bold;
+    margin-right: 8px;
+}

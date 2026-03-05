@@ -167,3 +167,51 @@
     background: var(--ana-neon);
     color: black;
 }
+/* --- MEVCUT BUTON VE LİSTEYİ SAĞA SABİTLEME --- */
+
+/* Butonun olduğu div */
+.tarama-merkezi {
+    position: fixed;
+    right: 30px;
+    top: 150px;
+    width: 280px;
+    z-index: 1001;
+    padding-bottom: 20px; /* Buton ile liste arası mesafe */
+    border-bottom: 1px solid rgba(0, 255, 150, 0.1); /* Hafif bir ayraç çizgisi */
+    margin-bottom: 15px !important;
+}
+/* Butonun altından akan liste */
+#gercek-kullanici-listesi {
+    position: fixed;
+    right: 30px;
+    top: 250px; /* Butonun hemen altı */
+    width: 280px;
+    max-height: 70vh;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+/* Liste içindeki kartları sağ panele göre daraltma */
+#gercek-kullanici-listesi .gonderi-kutusu {
+    padding: 12px;
+    margin-bottom: 10px;
+    background: rgba(10, 10, 10, 0.9);
+    border: 1px solid rgba(0, 255, 150, 0.3);
+    font-size: 0.8rem;
+    margin-top: 15px !important; /* Kartların birbirine yapışmasını önler */
+    border-radius: 8px;
+}
+
+/* Kart içindeki resimleri biraz küçültelim ki sağa sığsın */
+#gercek-kullanici-listesi .post-avatar {
+    width: 35px !important;
+    height: 35px !important;
+}
+
+/* Kaydırma çubuğunu gizle veya incelt (opsiyonel) */
+#gercek-kullanici-listesi::-webkit-scrollbar {
+    width: 3px;
+}
+#gercek-kullanici-listesi::-webkit-scrollbar-thumb {
+    background: var(--ana-neon);
+}

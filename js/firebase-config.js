@@ -1,9 +1,9 @@
-
+// js/firebase-config.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-
+// Senin görselindeki bilgiler (Kopyaladığın kısmı buraya koy)
 const firebaseConfig = {
   apiKey: "AIzaSyDN8xaNazRZZtKVBZHtmOWhdyRFK-Fk514",
   authDomain: "ark-os-b0842.firebaseapp.com",
@@ -14,7 +14,7 @@ const firebaseConfig = {
   measurementId: "G-LYLXJC71WR"
 };
 
-
+// Firebase'i başlat
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);

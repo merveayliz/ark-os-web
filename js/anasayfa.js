@@ -1,14 +1,9 @@
+// 1. Firebase bağlantılarını en üste ekledik
+import { auth, db } from './firebase-config.js';
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-window.addEventListener('DOMContentLoaded', () => {
-    const skaikruAd = localStorage.getItem("skaikru_ad") || "Bilinmeyen Savaşçı";
-   
-    const profilKutu = document.querySelector(".profil-kutu");
-    if(profilKutu) {
-        profilKutu.innerHTML += `<span style="color:var(--ana-neon); font-size:0.9rem;">${skaikruAd}</span>`;
-    }
-
-    karakterleriGoster(); 
-});
+// --- MEVCUT KARAKTER LİSTENE DOKUNMADIK ---
 const karakterler = [
     { 
         isim: "Clarke Griffin", 
@@ -38,7 +33,7 @@ const karakterler = [
         isim: "Lexa", 
         klan: "Trikru", 
         unvan: "Heda (Komutan)", 
-        ozet: "Klanları birleştiren bilge ve güçlü lider. 'Aşk zayıflıktır' derdi ama yanıldı.",
+        ozet: "Klanları birleştiren bilge and güçlü lider. 'Aşk zayıflıktır' derdi ama yanıldı.",
         resim: "img/lexa.jpg",
         replik:"Jus drein jus daun" 
     },
@@ -157,38 +152,30 @@ const karakterler = [
         ozet: "Teknolojiden nefret eden ama Octavia ile yol kesiştiren zeminli.", 
         resim: "img/illan.jpg" 
     }
-
 ];
 
-window.addEventListener('DOMContentLoaded', () => {
-    karakterleriGoster();
+// --- SAYFA YÜKLENME VE KULLANICI BİLGİSİ ---
+onAuthStateChanged(auth, async (user) => {
+    karakterleriGoster(); // Karakterleri bas
+
+    if (user) {
+        // Firebase'den güncel profil verilerini çekiyoruz
+        const userDoc = await getDoc(doc(db, "kullanicilar", user.uid));
+        if (userDoc.exists()) {
+            const data = userDoc.data();
+            // Navbar'ı güncelle
+            if(document.getElementById("nav-user-name")) document.getElementById("nav-user-name").innerText = data.kullaniciAdi;
+            if(document.getElementById("nav-avatar") && data.profilResmi) {
+                document.getElementById("nav-avatar").src = data.profilResmi;
+            }
+        }
+    }
 });
 
-
-function karakterleriGoster() {
-    let alan = document.getElementById("karakterler-alani");
-    alan.innerHTML = "";
-
-    karakterler.forEach(kisi => {
-        alan.innerHTML += `
-            <div class="kart">
-                <div class="kart-resim">
-                    <img src="${kisi.resim}" alt="${kisi.isim}">
-                </div>
-                <h3>${kisi.isim}</h3>
-                <p class="klan">${kisi.klan}</p>
-                <span class="unvan">${kisi.unvan}</span>
-                <p class="ozet">${kisi.ozet}</p>
-            </div>
-        `;
-    });
-}
-karakterleriGoster();
-
+// --- KARAKTERLERİ BASMA FONKSİYONU ---
 function karakterleriGoster() {
     let alan = document.getElementById("karakterler-alani");
     if(!alan) return; 
-    
     alan.innerHTML = ""; 
 
     karakterler.forEach((kisi, sira) => {
@@ -206,21 +193,23 @@ function karakterleriGoster() {
     });
 }
 
-function modalAc(siraNo) {
-   
+// --- MODUL GEÇİŞİ İÇİN KRİTİK GLOBAL TANIMLAMALAR ---
+// HTML'deki onclick'lerin çalışması için fonksiyonları window'a bağlıyoruz
+window.modalAc = function(siraNo) {
     const secilenKarakter = karakterler[siraNo];
     document.getElementById("modal-isim").innerText = secilenKarakter.isim;
     document.getElementById("modal-soz").innerText = `"${secilenKarakter.replik || 'May we meet again.'}"`;
     document.getElementById("soz-modal").style.display = "block";
-}
+};
 
-function modalKapat() {
+window.modalKapat = function() {
     document.getElementById("soz-modal").style.display = "none";
-}
+};
 
+// Dışarı tıklayınca kapansın
 window.onclick = function(event) {
     let modal = document.getElementById("soz-modal");
     if (event.target == modal) {
-        modalKapat();
+        window.modalKapat();
     }
-}
+};

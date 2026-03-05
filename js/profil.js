@@ -1,72 +1,67 @@
+// js/profil.js
+import { auth, db } from './firebase-config.js';
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-document.addEventListener("DOMContentLoaded", () => {
-   
-    const user = JSON.parse(localStorage.getItem("skaikru_user"));
-    
-    if (!user) {
-        alert("Erişim Reddedildi: Lütfen Giriş Yapın!");
+// 1. Sayfa Açıldığında Verileri Getir
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        // Firestore'dan verileri çekiyoruz
+        const userDoc = await getDoc(doc(db, "kullanicilar", user.uid));
+        
+        if (userDoc.exists()) {
+            const data = userDoc.data();
+            
+            // HTML'deki isimleri doldur
+            document.getElementById("profil-ad").innerText = data.kullaniciAdi;
+            document.getElementById("nav-user-name").innerText = data.kullaniciAdi;
+            
+            // Eğer veritabanında profil resmi varsa yükle
+            if (data.profilResmi) {
+                document.getElementById("profil-ana-resim").src = data.profilResmi;
+                document.getElementById("nav-avatar").src = data.profilResmi;
+            }
+        }
+    } else {
+        // Oturum açılmamışsa giriş sayfasına at
         window.location.href = "index.html";
-        return;
     }
-
-    document.getElementById("profil-ad").innerText = user.kullaniciAdi;
-    document.getElementById("nav-user-name").innerText = user.kullaniciAdi;
-    
-    teorilerimiYukle(user.kullaniciAdi);
 });
 
-function teorilerimiYukle(kullaniciAdi) {
-    const tumTeoriler = JSON.parse(localStorage.getItem("ark_teoriler")) || [];
-    const benimTeorilerim = tumTeoriler.filter(t => t.yazar === kullaniciAdi);
-    
-    const alan = document.getElementById("kullanici-teorileri");
-    
-    if (benimTeorilerim.length === 0) {
-        alan.innerHTML = "<p style='color:#888; text-align:center;'>Henüz bir teori yayınlamadın, Skaikru.</p>";
-        return;
-    }
-
-    benimTeorilerim.forEach(t => {
-        alan.innerHTML += `
-            <div class="gonderi-kutusu">
-                <div class="gonderici-bilgi">
-                    <img src="${t.avatar || 'img/murphy.jpg'}" class="post-avatar">
-                    <div class="yazar-detay">
-                        <strong>${t.yazar}</strong>
-                        <span>${t.tarih}</span>
-                    </div>
-                </div>
-                <p class="post-metin">${t.metin}</p>
-            </div>
-        `;
-    });
-}
-
-function cikisYap() {
-    if(confirm("Sistemden çıkış yapmak istediğine emin misin?")) {
-        window.location.href = "index.html";
-    }
-}
-
-function resmiKaydet(input) {
+// 2. RESMİ KAYDET FONKSİYONU (Butona basınca çalışacak olan)
+window.resmiKaydet = function(input) {
     if (input.files && input.files[0]) {
         const okuyucu = new FileReader();
+        okuyucu.onload = async function(e) {
+            const yeniResimYolu = e.target.result; // Resmin verisi
+            const user = auth.currentUser;
 
-        okuyucu.onload = function(e) {
-            const yeniResimYolu = e.target.result; 
-
-            document.getElementById('profil-ana-resim').src = yeniResimYolu;
-            const navAvatar = document.getElementById('nav-avatar');
-            if(navAvatar) navAvatar.src = yeniResimYolu;
-
-            let user = JSON.parse(localStorage.getItem("skaikru_user"));
             if (user) {
-                user.profilResmi = yeniResimYolu;
-                localStorage.setItem("skaikru_user", JSON.stringify(user));
-                alert("Sistem Güncellendi: Profil fotoğrafı Ark-OS veritabanına işlendi.");
+                try {
+                    // Veritabanına "profilResmi" alanını kaydet/güncelle
+                    await setDoc(doc(db, "kullanicilar", user.uid), {
+                        profilResmi: yeniResimYolu
+                    }, { merge: true });
+
+                    // Ekrandaki resimleri anında değiştir
+                    document.getElementById('profil-ana-resim').src = yeniResimYolu;
+                    document.getElementById('nav-avatar').src = yeniResimYolu;
+                    
+                    alert("Profil fotoğrafın Ark-OS veritabanına işlendi!");
+                } catch (error) {
+                    alert("Yükleme sırasında bir hata oluştu: " + error.message);
+                }
             }
         };
-
-        okuyucu.readAsDataURL(input.files[0]); 
+        okuyucu.readAsDataURL(input.files[0]);
     }
-}
+};
+
+// 3. ÇIKIŞ YAP FONKSİYONU
+window.cikisYap = function() {
+    if(confirm("Sistemden çıkış yapmak istediğine emin misin?")) {
+        auth.signOut().then(() => {
+            window.location.href = "index.html";
+        });
+    }
+};
