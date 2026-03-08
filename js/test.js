@@ -1,7 +1,3 @@
-
-import { auth, db } from './firebase-config.js';
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-
 const resimEslesme = {
     clarke: "clark.jpg",
     murphy: "murphy.jpg",
@@ -311,6 +307,7 @@ window.baslatOksijen = function() {
         }
     }, 1000);
 }
+
 
 
 
