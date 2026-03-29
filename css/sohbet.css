@@ -1,4 +1,4 @@
-/* Sağ Panel Konumu */
+
 .arkadas-listesi-paneli {
     position: fixed;
     right: 30px;
@@ -6,13 +6,12 @@
     width: 280px;
     max-height: 75vh;
     padding: 15px;
-    background: rgba(0, 0, 0, 0.4); /* Hafif karartı */
-    backdrop-filter: blur(8px);    /* Arkadaki sisi bulanıklaştırır, harika durur */
+    background: rgba(0, 0, 0, 0.4); 
+    backdrop-filter: blur(8px);  
     border-left: 2px solid rgba(0, 255, 150, 0.3);
     border-radius: 10px;
 }
 
-/* Başlık Alanı */
 .panel-baslik {
     color: #00ff96;
     font-family: 'Fira Code', monospace;
@@ -25,11 +24,10 @@
     letter-spacing: 3px;
 }
 
-/* Kartların Tasarımı */
 .arkadas-kart {
     display: flex;
     align-items: center;
-    background: rgba(10, 10, 10, 0.8); /* Kartın arkası daha net olsun */
+    background: rgba(10, 10, 10, 0.8); 
     border: 1px solid rgba(0, 255, 150, 0.2);
     padding: 12px;
     margin-bottom: 12px;
@@ -41,21 +39,19 @@
 .arkadas-kart:hover {
     background: rgba(0, 255, 150, 0.1);
     border-color: #00ff96;
-    transform: scale(1.05) translateX(-5px); /* Hafif büyüme ve sola kayma */
+    transform: scale(1.05) translateX(-5px); 
     box-shadow: -5px 0 15px rgba(0, 255, 150, 0.3);
 }
 
-/* Profil Resimleri */
 .kart-profil-resim img {
     width: 45px;
     height: 45px;
-    border-radius: 4px; /* Yuvarlak yerine hafif karemsi terminale daha uygun */
+    border-radius: 4px;
     border: 1px solid #00ff96;
     margin-right: 15px;
     object-fit: cover;
 }
 
-/* İsim ve Durum */
 .kart-isim {
     display: block;
     color: #ffffff;
@@ -73,14 +69,13 @@
     font-weight: bold;
 }
 
-/* js/sohbet.js içindeki mesajlar için stil */
 .terminal-mesaj {
     font-family: 'Fira Code', monospace;
     color: #00ff96;
     margin-bottom: 8px;
     font-size: 0.85rem;
     line-height: 1.4;
-    word-wrap: break-word; /* Uzun kelimeler kutuyu patlatmasın */
+    word-wrap: break-word; 
 }
 
 .mesaj-prefix {
